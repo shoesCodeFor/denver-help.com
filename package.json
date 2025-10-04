@@ -1,14 +1,31 @@
 {
-  "name": "denver-help-api",
+  "name": "indeed-parser",
   "version": "1.0.0",
-  "description": "Job search API for Denver healthcare",
-  "main": "indeed-parser/server.js",
+  "description": "API for parsing Indeed job listings into clean JSON",
+  "main": "index.js",
   "scripts": {
-    "start": "node indeed-parser/server.js",
+    "parse": "node index.js",
+    "parse:curl": "node index.js --curl",
+    "parse:denver": "node examples/parse-denver-healthcare.js",
+    "start": "node server.js",
+    "api:client": "node examples/api-client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "indeed-parser": "./index.js"
+  },
+  "keywords": [
+    "indeed",
+    "job",
+    "parse",
+    "scraper",
+    "json",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "request": "^2.88.2",
     "body-parser": "^2.2.0",
     "cheerio": "^1.1.2",
     "cors": "^2.8.5",
@@ -16,7 +33,9 @@
     "express": "^5.1.0",
     "node-fetch": "^3.3.2"
   },
-  "engines": {
-    "node": "20.x"
-  }
+  "files": [
+    "index.js",
+    "src/",
+    "README.md"
+  ]
 }
