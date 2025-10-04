@@ -7,7 +7,7 @@ services:
   source_dir: /
   
   # Explicitly set the run command
-  run_command: node indeed-parser/server.js
+  run_command: npm start
   
   # Service specification
   instance_size_slug: basic-xxs # 512MB RAM, 1vCPU (smallest size - adjust as needed)
