@@ -6,7 +6,7 @@
  * 
  * Documentation: https://developer.usajobs.gov/api-reference/
  */
-const request = require('request');
+const axios = require('axios');
 require('dotenv').config();
 
 // API Configuration
@@ -86,37 +86,33 @@ function searchJobs(params, options = {}) {
         'Authorization-Key': `${API_KEY.substring(0, 5)}...` // Partial key for security
       });
       
-      // Make the API request using request library
-      request({
+      // Make the API request using axios library
+      axios({
         url: BASE_URL,
         method: 'GET',
-        qs: queryParams,
+        params: queryParams, // Note: 'params' in axios instead of 'qs'
         headers: getHeaders(options.userAgent)
-      }, function(error, response, body) {
-        if (error) {
-          console.error('Request error:', error);
-          return reject(new Error(`USAJobs API Error: ${error.message}`));
-        }
-        
-        console.log('USAJobs API response status:', response.statusCode);
-        
-        if (response.statusCode !== 200) {
-          console.error('USAJobs API error response:', body);
-          return reject(new Error(`USAJobs API Error (${response.statusCode}): ${body}`));
-        }
-        
-        try {
-          const data = JSON.parse(body);
+      })
+        .then(response => {
+          console.log('USAJobs API response status:', response.status);
+          
+          const data = response.data; // Axios automatically parses JSON
           console.log('USAJobs API response parsed successfully');
           if (data.SearchResult) {
             console.log(`Found ${data.SearchResult.SearchResultCount} jobs`);
           }
           resolve(data);
-        } catch (parseError) {
-          console.error('JSON parse error:', parseError);
-          reject(new Error(`Error parsing USAJobs response: ${parseError.message}`));
-        }
-      });
+        })
+        .catch(error => {
+          console.error('Request error:', error);
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            console.error('USAJobs API error response:', error.response.data);
+            reject(new Error(`USAJobs API Error (${error.response.status}): ${error.response.data}`));
+          } else {
+            reject(new Error(`USAJobs API Error: ${error.message}`));
+          }
+        });
     } catch (error) {
       console.error('Unexpected error:', error);
       reject(new Error(`USAJobs API Error: ${error.message}`));
@@ -137,27 +133,22 @@ function getJobDetails(jobId, options = {}) {
       
       console.log(`USAJobs job details request: ${url}`);
       
-      // Make the API request using request library
-      request({
+      // Make the API request using axios library
+      axios({
         url: url,
         method: 'GET',
         headers: getHeaders(options.userAgent)
-      }, function(error, response, body) {
-        if (error) {
-          return reject(new Error(`USAJobs API Error: ${error.message}`));
-        }
-        
-        if (response.statusCode !== 200) {
-          return reject(new Error(`USAJobs API Error (${response.statusCode}): ${body}`));
-        }
-        
-        try {
-          const data = JSON.parse(body);
-          resolve(data);
-        } catch (parseError) {
-          reject(new Error(`Error parsing USAJobs job details: ${parseError.message}`));
-        }
-      });
+      })
+        .then(response => {
+          resolve(response.data); // Axios automatically parses JSON
+        })
+        .catch(error => {
+          if (error.response) {
+            reject(new Error(`USAJobs API Error (${error.response.status}): ${error.response.data}`));
+          } else {
+            reject(new Error(`USAJobs API Error: ${error.message}`));
+          }
+        });
     } catch (error) {
       reject(new Error(`USAJobs API Error: ${error.message}`));
     }
