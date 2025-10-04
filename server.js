@@ -19,6 +19,7 @@ if (process.env.US_JOBS_API_KEY) {
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const jobSearch = require('./index');
 
 // Initialize Express app
@@ -30,6 +31,9 @@ const VERSION = '1.0.0';
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Serve static files from the frontend build directory
+app.use(express.static(path.join(__dirname, 'dist/public')));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -427,6 +431,23 @@ app.use((err, req, res, next) => {
 });
 
 /**
+ * Serve the frontend for any non-API routes
+ * This should be after all API routes are defined
+ */
+app.get('*', (req, res) => {
+  // Only handle routes that aren't API routes
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'dist/public', 'index.html'));
+  } else {
+    // Pass to the next middleware/route handler
+    res.status(404).json({
+      error: 'not_found',
+      message: 'API endpoint not found'
+    });
+  }
+});
+
+/**
  * Start the server if this file is run directly
  */
 if (require.main === module) {
@@ -434,6 +455,7 @@ if (require.main === module) {
     console.log(`Job Search API server running on port ${PORT}`);
     console.log(`API info: http://localhost:${PORT}/api`);
     console.log(`Example: http://localhost:${PORT}/api/jobs?location=Denver,%20CO&radius=25&query=healthcare`);
+    console.log(`Frontend UI available at http://localhost:${PORT}/`);
   });
 }
 
