@@ -1,5 +1,22 @@
 {
+  "name": "denver-help-api",
+  "version": "1.0.0",
+  "description": "Job search API for Denver healthcare",
+  "main": "indeed-parser/server.js",
+  "scripts": {
+    "start": "node indeed-parser/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "body-parser": "^2.2.0",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
