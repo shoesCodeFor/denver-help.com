@@ -1,0 +1,35 @@
+# Version control
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules
+*/node_modules
+
+# Environment files (will be configured in App Platform)
+.env
+.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+CHANGELOG.md
+
+# Development files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Test files
+test
+tests
+coverage

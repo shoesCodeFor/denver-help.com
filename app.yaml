@@ -1,0 +1,70 @@
+# DigitalOcean App Platform configuration
+name: indeed-parser-api
+services:
+- name: api
+  # Build configuration
+  dockerfile_path: Dockerfile
+  source_dir: /
+  
+  # Service specification
+  instance_size_slug: basic-xxs # 512MB RAM, 1vCPU (smallest size - adjust as needed)
+  instance_count: 1
+  
+  # HTTP port exposed by container
+  http_port: 3000
+  
+  # Environment variables (secrets should be configured via DO dashboard)
+  envs:
+  - key: US_JOBS_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: ${US_JOBS_API_KEY}
+    
+  - key: FINDWORK_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: ${FINDWORK_API_KEY}
+    
+  - key: PORT
+    scope: RUN_TIME
+    value: "3000"
+  
+  # Health check configuration
+  health_check:
+    http_path: /health
+    port: 3000
+    initial_delay_seconds: 10
+    period_seconds: 30
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+    
+  # Routes configuration
+  routes:
+  - path: /
+    preserve_path_prefix: true
+    
+  # CORS configuration
+  cors:
+    allow_origins:
+    - regex: .*
+    allow_methods:
+    - GET
+    - POST
+    - OPTIONS
+    allow_headers:
+    - Content-Type
+    - Authorization
+    expose_headers:
+    - Content-Length
+    - Content-Type
+    max_age: 86400
+    
+  # Auto-scaling (disabled by default)
+  # Uncomment to enable auto-scaling
+  # auto_scaling:
+  #   min_instance_count: 1
+  #   max_instance_count: 3
+  #   metrics:
+  #   - metric: cpu_utilization
+  #     target_value: 80
