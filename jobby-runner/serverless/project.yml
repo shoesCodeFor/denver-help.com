@@ -1,0 +1,7 @@
+packages:
+  - name: usajobs
+    functions:
+      - name: get-usajobs
+        runtime: nodejs:18
+        web: true
+        main: index.main
