@@ -1,6 +1,6 @@
-# USAJobs Search API
+# Jobby!
 
-A professional API for searching government job listings through the official USAJobs API.
+A professional API for searching government job listings through multiple providers.
 
 ## Overview
 
@@ -40,7 +40,7 @@ Parameters:
 
 Example Request:
 ```
-GET /api/usajobs?query=software%20engineer&location=Denver,%20CO&radius=25&limit=50
+GET https://sea-lion-app-mfl5w.ondigitalocean.app/api/usajobs?query=software%20engineer&location=Denver,%20CO&radius=25&limit=50
 ```
 
 Example Response:
