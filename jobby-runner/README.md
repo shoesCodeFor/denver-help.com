@@ -26,6 +26,7 @@ Why a proxy? It stabilizes params/response, adds CORS, timeouts, and friendly er
   - `README.md` — deeper usage and schema notes
 - `CONTRIBUTING.md` — how to contribute (self‑tested, approachable)
 - `CODE_OF_CONDUCT.md` — No Assholes Rule + AI usage policy
+ - `DEPLOYMENT.md` — local run, Docker checks, and DigitalOcean deploys
 
 ## API — `GET /usajobs`
 The function is exposed as a web action. It accepts query params and returns JSON from the upstream.
@@ -87,6 +88,12 @@ Where to set it:
 - The front‑end should call the function URL you retrieved above.
 - For local development, you can point the front‑end env (e.g., `VITE_API_URL`, `NEXT_PUBLIC_API_URL`, etc.) to your function URL.
 - The preview front‑end will migrate to DigitalOcean App Platform; when it does, configure its env var to the function URL.
+
+## Deployment
+See `DEPLOYMENT.md` for:
+- Running functions and front‑end locally
+- Building/running the front‑end Docker image
+- Deploying functions with `doctl` and front‑end via DO App Platform (auto on `main`)
 
 ## Deploying Your Own “Town”
 - Fork this repository.
