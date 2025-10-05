@@ -182,4 +182,4 @@ To test the USAJobs API integration:
 node test-usajobs-api.js
 ```
 
-This script makes a direct request to the USAJobs API to verify connectivity and proper response handling.
+This script makes a direct request to the USAJobs API to verify connectivity and proper response handling.....
